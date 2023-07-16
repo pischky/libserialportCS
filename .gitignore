@@ -2,6 +2,7 @@
 *.BAK
 *.~*
 libserialport.suo
+libserialport.sln.cache
 AwaitEvents/bin
 AwaitEvents/obj
 AwaitEvents/bin
@@ -18,6 +19,10 @@ libserialport/bin
 libserialport/obj
 libserialport/bin
 libserialport/libserialport.csproj.user
+PortInfo/bin
+PortInfo/obj
+PortInfo/bin
+PortInfo/PortInfo.csproj.user
 ListPorts/bin
 ListPorts/obj
 ListPorts/bin
