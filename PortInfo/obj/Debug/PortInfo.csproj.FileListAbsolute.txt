@@ -1,0 +1,11 @@
+G:\sandbox\Libserialport\cs\PortInfo\bin\Debug\PortInfo.exe
+G:\sandbox\Libserialport\cs\PortInfo\bin\Debug\PortInfo.pdb
+G:\sandbox\Libserialport\cs\PortInfo\obj\Debug\ResolveAssemblyReference.cache
+G:\sandbox\Libserialport\cs\PortInfo\obj\Debug\PortInfo.exe
+G:\sandbox\Libserialport\cs\PortInfo\obj\Debug\PortInfo.pdb
+G:\sandbox\Libserialport\cs\PortInfo\bin\Debug\x86_64\libserialport.dll
+G:\sandbox\Libserialport\cs\PortInfo\bin\Debug\libserialportCS.dll
+G:\sandbox\Libserialport\cs\PortInfo\bin\Debug\libserialportCS.pdb
+G:\sandbox\Libserialport\cs\PortInfo\bin\Debug\x86\libserialport.dll
+G:\sandbox\Libserialport\cs\PortInfo\bin\Debug\x86\libgcc_s_dw2-1.dll
+G:\sandbox\Libserialport\cs\PortInfo\bin\Debug\x86\libwinpthread-1.dll
