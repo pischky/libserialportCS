@@ -1,6 +1,46 @@
 # libserialportCS
 Binding for C# of libserialport (http://sigrok.org/wiki/Libserialport)
 
+## Usage
+
+### Simple
+
+````
+using System;
+using System.Text;
+using libserialport;
+
+namespace Simple
+{
+  class Program
+  {
+    static void Main(string[] args)
+    {
+      using (SerialPortObj port = new SerialPortObj("COM2"))
+      {
+        port.open();
+        port.setBaudrate(9600);
+        byte[] buffer1 = Encoding.ASCII.GetBytes("Hello");
+        int cnt = port.blockingWrite(buffer1, 0);
+        byte[] buffer2 = new byte[50];
+        cnt = port.blockingRead(buffer2, 1000);
+        String s = Encoding.ASCII.GetString(buffer2, 0, cnt);
+        Console.WriteLine(s);
+        port.close();
+      }
+    }
+  }
+}
+````
+
+Add `libserialportCS.dll` to your project. Set "Build Action"
+to `Content` and "Copy to Output Directory" to `Copy if newer`.
+Also create two folders `x86` and `x86_64` to your project
+and add the native DLLs to them. Also set "Build Action" 
+and "Copy to Output Directory" to same values.
+
+![Visual Studio Settings](vs-settings.png "Visual Studio Settings")
+
 ## Building
 
 ### Windows using MinGW64
