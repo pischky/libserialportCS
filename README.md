@@ -3,7 +3,7 @@ Binding for C# of libserialport (http://sigrok.org/wiki/Libserialport)
 
 ## Usage
 
-### Simple
+### Simple Example
 
 ````
 using System;
@@ -40,6 +40,14 @@ and add the native DLLs to them. Also set "Build Action"
 and "Copy to Output Directory" to same values.
 
 ![Visual Studio Settings](vs-settings.png "Visual Studio Settings")
+
+### Configuration Example
+
+TODO
+
+### Serial Port Enumaration Example
+
+TODO
 
 ## Building
 
