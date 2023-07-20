@@ -46,6 +46,7 @@ namespace libserialport.example
                 {
                     Console.WriteLine("expected version 0.1.1 !!!!!!!!!!!!");
                 }
+                OpenUsbByVendorAndProduct();
                 AwaitEvents(COM1, COM2, COM6);
                 HandleErrors();
                 ListPorts();
@@ -55,6 +56,7 @@ namespace libserialport.example
                 SendReceive(COM2);
                 //SendReceive(COM2, COM1);
                 Signals(COM6);
+                //PortConfig2(COM2);
             }
             catch (Exception ex)
             {
@@ -240,6 +242,57 @@ namespace libserialport.example
             }
         }
 
+        private static void OpenUsbByVendorAndProduct()
+        {
+            Console.WriteLine("----------------------------------------"
+                              + "-- OpenUsbByVendorAndProduct -----");
+            const int VID = 0x0403; const int PID = 0xC7D0;
+            SerialPortObj[] portList = new SerialPortObj[0];
+            SerialPortObj myPort = null;
+            try
+            {
+                portList = SerialPortObj.listPorts();
+                int i = 0;
+                foreach (SerialPortObj spo in portList)
+                {
+                    Console.WriteLine("portList[{0}]: {1} - {2}", i,
+                                      spo.Name, spo.Description);
+                    if (spo.Transport == sp_transport.SP_TRANSPORT_USB)
+                    {
+                        Console.WriteLine("USB Port: {0}, {1}",
+                                          spo.UsbManufacturer, spo.UsbProduct);
+                        if (spo.UsbVendorId == VID && spo.UsbProductId == PID)
+                        {
+                            myPort = spo;
+                        }
+                    }
+                    ++i;
+                }
+            }
+            finally
+            {
+                // We could dispose explicit to free memory asap.
+                // Otherwise we can rely on garbage collection.
+                foreach (var spo in portList)
+                {
+                    if (!spo.Equals(myPort)) spo.Dispose();
+                }
+            }
+            if (myPort != null)
+            {
+                try
+                {
+                    myPort.open();
+                    transferSomeData(myPort);
+                    myPort.close();
+                }
+                finally
+                {
+                    myPort.Dispose();
+                }
+            }
+        }
+
         private static void OpenClose(String portName)
         {
             Console.WriteLine("----------------------------------------"
@@ -342,8 +395,42 @@ namespace libserialport.example
                 }
                 /* Now clean up by closing the port and freeing structures. */
                 port.close();
-                // initialConfig and otherConfig are cleand up by leaving using block.
+                // savedConfig and myConfig are cleand up by leaving using block.
             }
+        }
+
+        private static void PortConfig2(String portName)
+        {
+            Console.WriteLine("----------------------------------------"
+                              + "------- PortConfig2(\"{0}\") -----", portName);
+            using (SerialPortObj port = new SerialPortObj(portName))
+            {
+                port.open(sp_mode.SP_MODE_READ_WRITE);
+                using (PortConfigObj savedConfig = port.getConfig())
+                {
+                    using (PortConfigObj myConfig = new PortConfigObj())
+                    {
+                        myConfig.Baudrate = 9600;   myConfig.Bits = 8;
+                        myConfig.Parity = sp_parity.SP_PARITY_NONE;
+                        myConfig.Stopbits = 1;
+                        myConfig.Flowcontrol = sp_flowcontrol.SP_FLOWCONTROL_XONXOFF;
+                        port.setConfig(myConfig);
+                    }
+                    transferSomeData(port);
+                    port.setConfig(savedConfig);
+                }
+                port.close();
+            }
+        }
+
+        private static void transferSomeData(SerialPortObj port)
+        {
+            byte[] buffer1 = Encoding.ASCII.GetBytes("Hello");
+            int cnt = port.blockingWrite(buffer1, 0);
+            byte[] buffer2 = new byte[50];
+            cnt = port.blockingRead(buffer2, 1000);
+            String s = Encoding.ASCII.GetString(buffer2, 0, cnt);
+            Console.WriteLine(s);
         }
 
         private static void PortInfo(String portName)

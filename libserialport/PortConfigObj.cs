@@ -308,7 +308,7 @@ namespace libserialport
 
         #endregion
 
-        #region helper: throwExceptionWhenDisposed(), throwException(sp_return)
+        #region helper: throwExceptionWhenDisposed(), throwExceptionWhenNegative()
 
         private void throwExceptionWhenDisposed()
         {
